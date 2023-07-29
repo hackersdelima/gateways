@@ -72,6 +72,7 @@ public class GatewayController {
 
     @PostMapping("/gateways/{id}/devices")
     public ResponseEntity<ApiResponse> addGatewayDevice(@PathVariable long id, @RequestBody PeripheralDeviceDto peripheralDeviceDto) {
+        logger.info("Add device for gateway {} requested.", id);
         PeripheralDevice peripheralDevice = peripheralDeviceMapper.toPeripheralDeviceEntity(peripheralDeviceDto);
         Optional<Gateway> gateway = gatewayService.addDevice(id, peripheralDevice);
         if (gateway.isPresent()) {
@@ -79,6 +80,22 @@ public class GatewayController {
                     new ApiResponse().success(
                             peripheralDevice
                     )
+            );
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new ApiResponse().badRequest()
+            );
+        }
+    }
+
+
+    @DeleteMapping("/gateways/{id}/devices/{deviceId}")
+    public ResponseEntity<ApiResponse> removeGatewayDevices(@PathVariable long id, @PathVariable long deviceId) {
+        logger.info("Remove device {} for gateway {} requested.", deviceId, id);
+        Optional<Gateway> gateway = gatewayService.removeDevice(id, deviceId);
+        if (gateway.isPresent()) {
+            return ResponseEntity.ok(
+                    new ApiResponse().success(null)
             );
         } else {
             return ResponseEntity.badRequest().body(
