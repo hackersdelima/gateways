@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.Collections;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,6 +35,15 @@ public class GatewayServiceImpl implements GatewayService {
     @Override
     public Optional<Gateway> save(Gateway gateway) {
         return Optional.of(gatewayRepository.save(gateway));
+    }
+
+    @Override
+    public List<PeripheralDevice> findDevicesById(Long gatewayId) {
+        Optional<Gateway> gateway = findById(gatewayId);
+        if (gateway.isPresent() && gateway.get().getPeripheralDevices() != null) {
+            return gateway.get().getPeripheralDevices();
+        }
+        return new ArrayList<>();
     }
 
     @Override

@@ -3,7 +3,9 @@ package com.shishir.gateways.controller;
 import com.shishir.gateways.commons.ApiResponse;
 import com.shishir.gateways.dto.GatewayDto;
 import com.shishir.gateways.entity.Gateway;
+import com.shishir.gateways.entity.PeripheralDevice;
 import com.shishir.gateways.mapper.GatewayMapper;
+import com.shishir.gateways.mapper.PeripheralDeviceMapper;
 import com.shishir.gateways.service.GatewayService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -21,6 +23,7 @@ public class GatewayController {
     private static final Logger logger = LoggerFactory.getLogger(GatewayController.class);
     private final GatewayService gatewayService;
     private final GatewayMapper gatewayMapper;
+    private final PeripheralDeviceMapper peripheralDeviceMapper;
 
     @GetMapping("/gateways")
     public ResponseEntity<ApiResponse> getAllGateways() {
@@ -30,8 +33,21 @@ public class GatewayController {
         return ResponseEntity.ok(new ApiResponse().success(response));
     }
 
+    @GetMapping("/gateways/{id}")
+    public ResponseEntity<ApiResponse> getOneGateway(@PathVariable long id) {
+        logger.info("Get gateway by id {} requested.", id);
+        Optional<Gateway> gateway = gatewayService.findById(id);
+        if (gateway.isPresent()) {
+            GatewayDto response = gatewayMapper.toGatewayDto(gateway.get());
+            return ResponseEntity.ok(new ApiResponse().success(response));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping("/gateways")
     public ResponseEntity<ApiResponse> saveGateway(@RequestBody GatewayDto gatewayDto) {
+        logger.info("Save gateway requested.");
         Optional<Gateway> createdGateway = gatewayService.save(
                 gatewayMapper.toGateway(gatewayDto)
         );
@@ -40,6 +56,15 @@ public class GatewayController {
                 gatewayMapper.toGatewayDto(gateway)
         ))).orElseGet(() -> ResponseEntity.badRequest().body(
                 new ApiResponse().badRequest()
+        ));
+    }
+
+    @GetMapping("/gateways/{id}/devices")
+    public ResponseEntity<ApiResponse> getGatewayDevices(@PathVariable long id) {
+        logger.info("Get devices requested for gateway id {}", id);
+        List<PeripheralDevice> devices = gatewayService.findDevicesById(id);
+        return ResponseEntity.ok(new ApiResponse().success(
+                peripheralDeviceMapper.toPeripheralDeviceDto(devices)
         ));
     }
 }
