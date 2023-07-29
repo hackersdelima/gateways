@@ -47,7 +47,7 @@ public class GatewayController {
     }
 
     @PostMapping("/gateways")
-    public ResponseEntity<ApiResponse> saveGateway(@RequestBody GatewayDto gatewayDto) {
+    public ResponseEntity<ApiResponse> addOneGateway(@RequestBody GatewayDto gatewayDto) {
         logger.info("Save gateway requested.");
         Optional<Gateway> createdGateway = gatewayService.save(
                 gatewayMapper.toGateway(gatewayDto)
