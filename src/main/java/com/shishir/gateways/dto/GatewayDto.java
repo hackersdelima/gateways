@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class GatewayResponseDto {
+public class GatewayDto {
     private Long id;
     private String serialNumber;
     private String name;
