@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -40,6 +41,7 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Override
+    @Transactional
     public Optional<Gateway> addDevice(Long gatewayId, PeripheralDevice peripheralDevice) {
         Optional<Gateway> gatewayOptional = gatewayRepository.findById(gatewayId);
         if (gatewayOptional.isPresent()) {
@@ -58,6 +60,7 @@ public class GatewayServiceImpl implements GatewayService {
     }
 
     @Override
+    @Transactional
     public Optional<Gateway> removeDevice(Long gatewayId, Long deviceId) {
         Optional<Gateway> gatewayOptional = gatewayRepository.findById(gatewayId);
         if (gatewayOptional.isPresent()) {

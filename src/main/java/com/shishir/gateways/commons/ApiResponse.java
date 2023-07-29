@@ -1,27 +1,31 @@
 package com.shishir.gateways.commons;
 
-import lombok.Builder;
-import lombok.ToString;
+import lombok.Getter;
+import lombok.Setter;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
 
-@ToString
-@Builder
+@Getter
+@Setter
 public class ApiResponse {
     private int httpStatus;
     private String message;
+    private Object data;
     private List<String> errors;
 
     public ApiResponse badRequest() {
-        this.httpStatus = HttpStatus.BAD_REQUEST.value();
-        this.message = HttpStatus.BAD_REQUEST.getReasonPhrase();
-        return this;
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setMessage(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        apiResponse.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+        return apiResponse;
     }
 
-    public ApiResponse success() {
-        this.httpStatus = HttpStatus.OK.value();
-        this.message = HttpStatus.OK.getReasonPhrase();
-        return this;
+    public ApiResponse success(Object data) {
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setData(data);
+        apiResponse.setMessage(HttpStatus.OK.getReasonPhrase());
+        apiResponse.setHttpStatus(HttpStatus.OK.value());
+        return apiResponse;
     }
 }
