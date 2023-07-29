@@ -2,6 +2,7 @@ package com.shishir.gateways.controller;
 
 import com.shishir.gateways.commons.ApiResponse;
 import com.shishir.gateways.dto.GatewayDto;
+import com.shishir.gateways.dto.PeripheralDeviceDto;
 import com.shishir.gateways.entity.Gateway;
 import com.shishir.gateways.entity.PeripheralDevice;
 import com.shishir.gateways.mapper.GatewayMapper;
@@ -66,5 +67,23 @@ public class GatewayController {
         return ResponseEntity.ok(new ApiResponse().success(
                 peripheralDeviceMapper.toPeripheralDeviceDto(devices)
         ));
+    }
+
+
+    @PostMapping("/gateways/{id}/devices")
+    public ResponseEntity<ApiResponse> addGatewayDevice(@PathVariable long id, @RequestBody PeripheralDeviceDto peripheralDeviceDto) {
+        PeripheralDevice peripheralDevice = peripheralDeviceMapper.toPeripheralDeviceEntity(peripheralDeviceDto);
+        Optional<Gateway> gateway = gatewayService.addDevice(id, peripheralDevice);
+        if (gateway.isPresent()) {
+            return ResponseEntity.ok(
+                    new ApiResponse().success(
+                            peripheralDevice
+                    )
+            );
+        } else {
+            return ResponseEntity.badRequest().body(
+                    new ApiResponse().badRequest()
+            );
+        }
     }
 }

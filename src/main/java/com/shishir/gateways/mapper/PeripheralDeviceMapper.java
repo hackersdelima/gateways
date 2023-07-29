@@ -8,6 +8,8 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface PeripheralDeviceMapper {
+    PeripheralDevice toPeripheralDeviceEntity(PeripheralDeviceDto peripheralDeviceDto);
+    PeripheralDeviceDto toPeripheralDeviceDto(PeripheralDevice peripheralDevice);
     List<PeripheralDeviceDto> toPeripheralDeviceDto(List<PeripheralDevice> peripheralDevices);
 
 }
