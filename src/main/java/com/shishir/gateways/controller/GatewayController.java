@@ -10,6 +10,9 @@ import com.shishir.gateways.mapper.GatewayMapper;
 import com.shishir.gateways.mapper.PeripheralDeviceMapper;
 import com.shishir.gateways.service.GatewayService;
 import com.shishir.gateways.util.ValidationCheckUtil;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +27,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("impl/api/v1")
+@Api(tags = "Gateway REST APIs")
 public class GatewayController {
     private static final Logger logger = LoggerFactory.getLogger(GatewayController.class);
     private final GatewayService gatewayService;
@@ -31,6 +35,11 @@ public class GatewayController {
     private final PeripheralDeviceMapper peripheralDeviceMapper;
 
     @GetMapping("/gateways")
+    @ApiOperation("Fetch all available Gateways")
+    @ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "Successful response"),
+            @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error")
+    })
     public ResponseEntity<ApiResponse> getAllGateways() {
         logger.info("Get all gateways requested.");
         List<Gateway> gateways = gatewayService.findAll();
@@ -39,6 +48,12 @@ public class GatewayController {
     }
 
     @GetMapping("/gateways/{id}")
+    @ApiOperation("Fetch one Gateway by ID")
+    @ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "Successful response"),
+            @io.swagger.annotations.ApiResponse(code = 404, message = "Gateway Not Found"),
+            @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error")
+    })
     public ResponseEntity<ApiResponse> getOneGateway(@PathVariable long id) {
         logger.info("Get gateway by id {} requested.", id);
         Optional<Gateway> gateway = gatewayService.findById(id);
@@ -51,6 +66,12 @@ public class GatewayController {
     }
 
     @PostMapping("/gateways")
+    @ApiOperation("Create one Gateway")
+    @ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "Successful response"),
+            @io.swagger.annotations.ApiResponse(code = 400, message = "Invalid Request / Validation Error"),
+            @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error")
+    })
     public ResponseEntity<ApiResponse> addOneGateway(@Valid @RequestBody GatewayDto gatewayDto, BindingResult bindingResult) {
         logger.info("Save gateway requested.");
 
@@ -68,6 +89,12 @@ public class GatewayController {
     }
 
     @GetMapping("/gateways/{id}/devices")
+    @ApiOperation("Fetch all available devices for Gateway")
+    @ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "Successful Response"),
+            @io.swagger.annotations.ApiResponse(code = 404, message = "Gateway Not Found"),
+            @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error")
+    })
     public ResponseEntity<ApiResponse> getGatewayDevices(@PathVariable long id) {
         logger.info("Get devices requested for gateway id {}", id);
         List<PeripheralDevice> devices = gatewayService.findDevicesById(id);
@@ -78,6 +105,13 @@ public class GatewayController {
 
 
     @PostMapping("/gateways/{id}/devices")
+    @ApiOperation("Add a device to Gateway")
+    @ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "Successful response"),
+            @io.swagger.annotations.ApiResponse(code = 400, message = "Invalid Request"),
+            @io.swagger.annotations.ApiResponse(code = 404, message = "Gateway Not Found"),
+            @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error")
+    })
     public ResponseEntity<ApiResponse> addGatewayDevice(@PathVariable long id, @RequestBody PeripheralDeviceRequestDto peripheralDeviceRequestDto) {
         logger.info("Add device for gateway {} requested.", id);
         PeripheralDevice peripheralDevice = peripheralDeviceMapper.toPeripheralDeviceEntity(peripheralDeviceRequestDto);
@@ -97,7 +131,14 @@ public class GatewayController {
 
 
     @DeleteMapping("/gateways/{id}/devices/{deviceId}")
-    public ResponseEntity<ApiResponse> removeGatewayDevices(@PathVariable long id, @PathVariable long deviceId) {
+    @ApiOperation("Remove device from a Gateway")
+    @ApiResponses(value = {
+            @io.swagger.annotations.ApiResponse(code = 200, message = "Successful response"),
+            @io.swagger.annotations.ApiResponse(code = 400, message = "Invalid Request"),
+            @io.swagger.annotations.ApiResponse(code = 404, message = "Gateway Not Found"),
+            @io.swagger.annotations.ApiResponse(code = 500, message = "Internal Server Error")
+    })
+    public ResponseEntity<ApiResponse> removeGatewayDevice(@PathVariable long id, @PathVariable long deviceId) {
         logger.info("Remove device {} for gateway {} requested.", deviceId, id);
         Optional<Gateway> gateway = gatewayService.removeDevice(id, deviceId);
         if (gateway.isPresent()) {
