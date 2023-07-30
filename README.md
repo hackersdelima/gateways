@@ -29,11 +29,18 @@ Each peripheral device has:
 - Database: h2 (in-memory)
 - Automated Build: Apache Maven
 
+## Software Features
+- Fetch all gateways
+- Create one gateway
+- Fetch all devices for gateway
+- Add one device for gateway
+- Remove one device for gateway
+
 ## Technical Features
-- Spring Boot REST
+- Spring Boot REST Controller
 - MapStruct for Object Mapping
 - Exception Handling
-- Repository Pattern
+- Repository Design Pattern
 - Hibernate
 - Swagger Documentation
 - Application Properties value implementation
