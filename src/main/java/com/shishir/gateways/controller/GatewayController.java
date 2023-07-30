@@ -6,15 +6,20 @@ import com.shishir.gateways.dto.PeripheralDeviceDto;
 import com.shishir.gateways.entity.Gateway;
 import com.shishir.gateways.entity.PeripheralDevice;
 import com.shishir.gateways.exceptions.ResourceNotFoundException;
+import com.shishir.gateways.exceptions.ValidationException;
 import com.shishir.gateways.mapper.GatewayMapper;
 import com.shishir.gateways.mapper.PeripheralDeviceMapper;
 import com.shishir.gateways.service.GatewayService;
+import com.shishir.gateways.util.ValidationCheckUtil;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,8 +53,11 @@ public class GatewayController {
     }
 
     @PostMapping("/gateways")
-    public ResponseEntity<ApiResponse> addOneGateway(@RequestBody GatewayDto gatewayDto) {
+    public ResponseEntity<ApiResponse> addOneGateway(@Valid @RequestBody GatewayDto gatewayDto, BindingResult bindingResult) {
         logger.info("Save gateway requested.");
+
+        ValidationCheckUtil.checkBindingResultAndThrow(bindingResult);
+
         Optional<Gateway> createdGateway = gatewayService.save(
                 gatewayMapper.toGateway(gatewayDto)
         );

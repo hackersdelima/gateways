@@ -28,6 +28,14 @@ public class ApiResponse {
         return apiResponse;
     }
 
+    public ApiResponse badRequest(String message, List<String> errors) {
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setMessage(message);
+        apiResponse.setErrors(errors);
+        apiResponse.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+        return apiResponse;
+    }
+
     public ApiResponse notFound(String message) {
         ApiResponse apiResponse = new ApiResponse();
         if(null==message) {
