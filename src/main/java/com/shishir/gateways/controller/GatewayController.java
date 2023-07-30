@@ -2,11 +2,10 @@ package com.shishir.gateways.controller;
 
 import com.shishir.gateways.commons.ApiResponse;
 import com.shishir.gateways.dto.GatewayDto;
-import com.shishir.gateways.dto.PeripheralDeviceDto;
+import com.shishir.gateways.dto.PeripheralDeviceRequestDto;
 import com.shishir.gateways.entity.Gateway;
 import com.shishir.gateways.entity.PeripheralDevice;
 import com.shishir.gateways.exceptions.ResourceNotFoundException;
-import com.shishir.gateways.exceptions.ValidationException;
 import com.shishir.gateways.mapper.GatewayMapper;
 import com.shishir.gateways.mapper.PeripheralDeviceMapper;
 import com.shishir.gateways.service.GatewayService;
@@ -19,7 +18,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,9 +78,9 @@ public class GatewayController {
 
 
     @PostMapping("/gateways/{id}/devices")
-    public ResponseEntity<ApiResponse> addGatewayDevice(@PathVariable long id, @RequestBody PeripheralDeviceDto peripheralDeviceDto) {
+    public ResponseEntity<ApiResponse> addGatewayDevice(@PathVariable long id, @RequestBody PeripheralDeviceRequestDto peripheralDeviceRequestDto) {
         logger.info("Add device for gateway {} requested.", id);
-        PeripheralDevice peripheralDevice = peripheralDeviceMapper.toPeripheralDeviceEntity(peripheralDeviceDto);
+        PeripheralDevice peripheralDevice = peripheralDeviceMapper.toPeripheralDeviceEntity(peripheralDeviceRequestDto);
         Optional<Gateway> gateway = gatewayService.addDevice(id, peripheralDevice);
         if (gateway.isPresent()) {
             return ResponseEntity.ok(

@@ -13,6 +13,7 @@ import java.util.Date;
 @Getter
 @Setter
 public class PeripheralDeviceDto {
+    private Long id;
     private Long uid;
     private String vendor;
     private Date createdDate;

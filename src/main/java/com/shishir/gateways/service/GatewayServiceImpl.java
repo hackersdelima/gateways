@@ -42,9 +42,14 @@ public class GatewayServiceImpl implements GatewayService {
     @Override
     public List<PeripheralDevice> findDevicesById(Long gatewayId) {
         Optional<Gateway> gateway = findById(gatewayId);
-        if (gateway.isPresent() && gateway.get().getPeripheralDevices() != null) {
-            return gateway.get().getPeripheralDevices();
+        if (gateway.isPresent()) {
+            if (gateway.get().getPeripheralDevices() != null && !gateway.get().getPeripheralDevices().isEmpty()) {
+                return gateway.get().getPeripheralDevices();
+            }
+        } else {
+            throw new ResourceNotFoundException("Gateway not found for id: " + gatewayId);
         }
+
         return new ArrayList<>();
     }
 
@@ -54,15 +59,19 @@ public class GatewayServiceImpl implements GatewayService {
         Optional<Gateway> gatewayOptional = gatewayRepository.findById(gatewayId);
         if (gatewayOptional.isPresent()) {
             Gateway gateway = gatewayOptional.get();
+            peripheralDevice.setGateway(gateway);
 
-            if (null != gateway.getPeripheralDevices() && !gateway.getPeripheralDevices().isEmpty()) {
-                if(gateway.getPeripheralDevices().size() < devicesLimit) {
-                    gateway.getPeripheralDevices().add(peripheralDevice);
-                }else{
-                    throw new DeviceLimitExceededException();
-                }
+            List<PeripheralDevice> peripheralDevices = gateway.getPeripheralDevices();
+
+            if (peripheralDevices == null) {
+                peripheralDevices = new ArrayList<>();
+                peripheralDevices.add(peripheralDevice);
+            }
+
+            if (peripheralDevices.size() == devicesLimit) {
+                throw new DeviceLimitExceededException();
             } else {
-                gateway.setPeripheralDevices(Collections.singletonList(peripheralDevice));
+                peripheralDevices.add(peripheralDevice);
             }
 
             return Optional.of(gatewayRepository.save(gateway));

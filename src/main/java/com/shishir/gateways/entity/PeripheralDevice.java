@@ -1,5 +1,6 @@
 package com.shishir.gateways.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.shishir.gateways.enums.DeviceStatus;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,6 +32,7 @@ public class PeripheralDevice {
     @Enumerated(EnumType.STRING)
     private DeviceStatus status;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "gateway_id")
     private Gateway gateway;

@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -25,5 +26,5 @@ public class Gateway {
     private String ipv4Address;
 
     @OneToMany(mappedBy = "gateway", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<PeripheralDevice> peripheralDevices;
+    private List<PeripheralDevice> peripheralDevices = new ArrayList<>();
 }
