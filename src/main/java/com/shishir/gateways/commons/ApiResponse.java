@@ -21,6 +21,13 @@ public class ApiResponse {
         return apiResponse;
     }
 
+    public ApiResponse badRequest(String message) {
+        ApiResponse apiResponse = new ApiResponse();
+        apiResponse.setMessage(message);
+        apiResponse.setHttpStatus(HttpStatus.BAD_REQUEST.value());
+        return apiResponse;
+    }
+
     public ApiResponse notFound(String message) {
         ApiResponse apiResponse = new ApiResponse();
         if(null==message) {

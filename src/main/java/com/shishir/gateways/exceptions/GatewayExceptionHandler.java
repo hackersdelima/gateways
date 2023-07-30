@@ -14,4 +14,10 @@ public class GatewayExceptionHandler {
         ApiResponse response = new ApiResponse().notFound(ex.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
+
+    @ExceptionHandler(DeviceLimitExceededException.class)
+    public ResponseEntity<ApiResponse> handleDeviceLimitExceededException(ResourceNotFoundException ex) {
+        ApiResponse response = new ApiResponse().badRequest("Devices limit exceeded");
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
 }
