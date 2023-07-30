@@ -21,6 +21,17 @@ public class ApiResponse {
         return apiResponse;
     }
 
+    public ApiResponse notFound(String message) {
+        ApiResponse apiResponse = new ApiResponse();
+        if(null==message) {
+            apiResponse.setMessage(HttpStatus.NOT_FOUND.getReasonPhrase());
+        }else{
+            apiResponse.setMessage(message);
+        }
+        apiResponse.setHttpStatus(HttpStatus.NOT_FOUND.value());
+        return apiResponse;
+    }
+
     public ApiResponse success(Object data) {
         ApiResponse apiResponse = new ApiResponse();
         apiResponse.setData(data);

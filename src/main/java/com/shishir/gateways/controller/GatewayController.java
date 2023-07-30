@@ -5,6 +5,7 @@ import com.shishir.gateways.dto.GatewayDto;
 import com.shishir.gateways.dto.PeripheralDeviceDto;
 import com.shishir.gateways.entity.Gateway;
 import com.shishir.gateways.entity.PeripheralDevice;
+import com.shishir.gateways.exceptions.ResourceNotFoundException;
 import com.shishir.gateways.mapper.GatewayMapper;
 import com.shishir.gateways.mapper.PeripheralDeviceMapper;
 import com.shishir.gateways.service.GatewayService;
@@ -42,7 +43,7 @@ public class GatewayController {
             GatewayDto response = gatewayMapper.toGatewayDto(gateway.get());
             return ResponseEntity.ok(new ApiResponse().success(response));
         } else {
-            return ResponseEntity.notFound().build();
+            throw new ResourceNotFoundException("Gateway not found for id: " + id);
         }
     }
 

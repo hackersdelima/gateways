@@ -3,6 +3,7 @@ package com.shishir.gateways.service;
 import com.shishir.gateways.entity.Gateway;
 import com.shishir.gateways.entity.GatewayRepository;
 import com.shishir.gateways.entity.PeripheralDevice;
+import com.shishir.gateways.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -60,9 +61,9 @@ public class GatewayServiceImpl implements GatewayService {
             }
 
             return Optional.of(gatewayRepository.save(gateway));
+        } else {
+            throw new ResourceNotFoundException("Gateway not found for id: " + gatewayId);
         }
-
-        return Optional.empty();
     }
 
     @Override
@@ -83,8 +84,8 @@ public class GatewayServiceImpl implements GatewayService {
             }
 
             return Optional.of(gatewayRepository.save(gateway));
+        } else {
+            throw new ResourceNotFoundException("Gateway not found for id: " + gatewayId);
         }
-
-        return Optional.empty();
     }
 }
