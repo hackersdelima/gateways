@@ -1,10 +1,13 @@
 package com.shishir.gateways.service;
 
+import com.shishir.gateways.controller.GatewayController;
 import com.shishir.gateways.entity.Gateway;
 import com.shishir.gateways.entity.GatewayRepository;
 import com.shishir.gateways.entity.PeripheralDevice;
 import com.shishir.gateways.exceptions.DeviceLimitExceededException;
 import com.shishir.gateways.exceptions.ResourceNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -17,6 +20,7 @@ import java.util.Optional;
 
 @Service
 public class GatewayServiceImpl implements GatewayService {
+    private static final Logger logger = LoggerFactory.getLogger(GatewayServiceImpl.class);
     @Value("${gateway.devices.limit}")
     private int devicesLimit;
     private final GatewayRepository gatewayRepository;
@@ -49,6 +53,7 @@ public class GatewayServiceImpl implements GatewayService {
                 return gateway.get().getPeripheralDevices();
             }
         } else {
+            logger.error("Gateway not found for id: {}", gatewayId);
             throw new ResourceNotFoundException("Gateway not found for id: " + gatewayId);
         }
 
@@ -71,6 +76,7 @@ public class GatewayServiceImpl implements GatewayService {
             }
 
             if (peripheralDevices.size() == devicesLimit) {
+                logger.error("Device limit exceeded for Gateway {}", gatewayId);
                 throw new DeviceLimitExceededException();
             } else {
                 peripheralDevices.add(peripheralDevice);
@@ -78,6 +84,7 @@ public class GatewayServiceImpl implements GatewayService {
 
             return Optional.of(gatewayRepository.save(gateway));
         } else {
+            logger.error("Gateway not found for id: {}", gatewayId);
             throw new ResourceNotFoundException("Gateway not found for id: " + gatewayId);
         }
     }
@@ -95,6 +102,7 @@ public class GatewayServiceImpl implements GatewayService {
 
             return Optional.of(gatewayRepository.save(gateway));
         } else {
+            logger.error("Gateway not found for id: {}", gatewayId);
             throw new ResourceNotFoundException("Gateway not found for id: " + gatewayId);
         }
     }

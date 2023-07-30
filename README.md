@@ -38,5 +38,6 @@ Each peripheral device has:
 - Swagger Documentation
 - Application Properties value implementation
 - Validation
+- Logging
 - Unit Test
 - CI/CD
