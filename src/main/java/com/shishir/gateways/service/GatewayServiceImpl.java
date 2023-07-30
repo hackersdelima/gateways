@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class GatewayServiceImpl implements GatewayService {
@@ -86,16 +88,10 @@ public class GatewayServiceImpl implements GatewayService {
         Optional<Gateway> gatewayOptional = gatewayRepository.findById(gatewayId);
         if (gatewayOptional.isPresent()) {
             Gateway gateway = gatewayOptional.get();
+            List<PeripheralDevice> devices = gateway.getPeripheralDevices();
 
-            if (null != gateway.getPeripheralDevices() && gateway.getPeripheralDevices().size() > 1) {
-                List<PeripheralDevice> devices = gateway.getPeripheralDevices()
-                        .stream()
-                        .filter(peripheralDevice -> !Objects.equals(peripheralDevice.getId(), deviceId))
-                        .collect(Collectors.toList());
-                gateway.setPeripheralDevices(devices);
-            } else {
-                gateway.setPeripheralDevices(null);
-            }
+            devices.removeIf(device -> Objects.equals(device.getId(), deviceId));
+            gateway.setPeripheralDevices(devices);
 
             return Optional.of(gatewayRepository.save(gateway));
         } else {
