@@ -1,6 +1,5 @@
 package com.shishir.gateways.service;
 
-import com.shishir.gateways.controller.GatewayController;
 import com.shishir.gateways.entity.Gateway;
 import com.shishir.gateways.entity.GatewayRepository;
 import com.shishir.gateways.entity.PeripheralDevice;
@@ -22,7 +21,7 @@ import java.util.Optional;
 public class GatewayServiceImpl implements GatewayService {
     private static final Logger logger = LoggerFactory.getLogger(GatewayServiceImpl.class);
     @Value("${gateway.devices.limit}")
-    private int devicesLimit;
+    int devicesLimit;
     private final GatewayRepository gatewayRepository;
 
     @Autowired
@@ -70,16 +69,16 @@ public class GatewayServiceImpl implements GatewayService {
 
             List<PeripheralDevice> peripheralDevices = gateway.getPeripheralDevices();
 
-            if (peripheralDevices == null) {
+            if (peripheralDevices == null || peripheralDevices.isEmpty()) {
                 peripheralDevices = new ArrayList<>();
                 peripheralDevices.add(peripheralDevice);
-            }
-
-            if (peripheralDevices.size() == devicesLimit) {
-                logger.error("Device limit exceeded for Gateway {}", gatewayId);
-                throw new DeviceLimitExceededException();
             } else {
-                peripheralDevices.add(peripheralDevice);
+                if (peripheralDevices.size() == devicesLimit) {
+                    logger.error("Device limit exceeded for Gateway {}", gatewayId);
+                    throw new DeviceLimitExceededException();
+                } else {
+                    peripheralDevices.add(peripheralDevice);
+                }
             }
 
             return Optional.of(gatewayRepository.save(gateway));
