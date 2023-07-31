@@ -122,3 +122,7 @@ Unit Test using Mockito and JUnit.
 - ### Continuous Integration (CI) builds
 This process involves using GitHub Actions to automatically build the project, generate the jar file, and publish it as an artifact whenever changes are pushed to the repository.
 This artifact can be downloaded and tested in local.
+
+![GithubCI](githubCI.png)
+
+![GithubCIArtifact](githubCIArtifact.png)
