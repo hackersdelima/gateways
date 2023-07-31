@@ -208,8 +208,6 @@ public class GatewayServiceImplTest {
             peripheralDevice.setId((long) i);
             peripheralDevice.setStatus(DeviceStatus.ONLINE);
             peripheralDevice.setVendor("Vendor Test "+i);
-            peripheralDevice.setUid((long) i);
-            peripheralDevice.setCreatedDate(new Date());
 
             devices.add(peripheralDevice);
         }
@@ -221,8 +219,6 @@ public class GatewayServiceImplTest {
         PeripheralDevice peripheralDevice = new PeripheralDevice();
         peripheralDevice.setStatus(DeviceStatus.ONLINE);
         peripheralDevice.setVendor("Vendor Test ");
-        peripheralDevice.setUid((long) 123456789);
-        peripheralDevice.setCreatedDate(new Date());
         return peripheralDevice;
     }
 
