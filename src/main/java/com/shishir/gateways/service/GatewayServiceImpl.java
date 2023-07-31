@@ -5,6 +5,7 @@ import com.shishir.gateways.entity.GatewayRepository;
 import com.shishir.gateways.entity.PeripheralDevice;
 import com.shishir.gateways.exceptions.DeviceLimitExceededException;
 import com.shishir.gateways.exceptions.ResourceNotFoundException;
+import com.shishir.gateways.util.RandomUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +66,7 @@ public class GatewayServiceImpl implements GatewayService {
         Optional<Gateway> gatewayOptional = gatewayRepository.findById(gatewayId);
         if (gatewayOptional.isPresent()) {
             Gateway gateway = gatewayOptional.get();
+            peripheralDevice.setUid(RandomUtil.genRandomNumber());
             peripheralDevice.setGateway(gateway);
 
             List<PeripheralDevice> peripheralDevices = gateway.getPeripheralDevices();

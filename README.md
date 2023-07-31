@@ -21,13 +21,32 @@ Each peripheral device has:
 - status - online/offline
 
 ## Low-Fi UI/UX
-![alt text](gateway-low-fi.png)
+![Gateway-Low-Fi](gateway-low-fi.png)
 
 ## Software Details
 - Programming Language: Java 8
 - Framework: Spring Boot
 - Database: h2 (in-memory)
 - Automated Build: Apache Maven
+
+## Steps to Run Application in Local
+To run a Maven Spring Boot application, you need to use the `spring-boot:run` goal provided by the Spring Boot Maven Plugin. Here's a step-by-step guide:
+
+1. Make sure you have Java 8 or later and Maven installed on your system.
+2. Open a terminal or command prompt and navigate to the root directory of your Spring Boot project, where your `pom.xml` file is located.
+3. Build the project using Maven by running the following command:
+   ```bash
+   mvn clean install
+   ```
+   This will compile the source code, run tests, and package the application into a jar file.
+4. Once the build is successful, you can run the Spring Boot application using the following command:
+   ```bash
+   mvn spring-boot:run
+   ```
+   This will start the embedded Tomcat server and run your Spring Boot application.
+5. You should see logs indicating that the application has started and is running on a specific port (usually 8088 by default).
+6. Open your web postman and access the application using the base URL, usually `http://localhost:8088/`.
+7. To stop the running application, press `Ctrl + C` in the terminal where the application is running.
 
 ## Software Features
 - Fetch all gateways
@@ -66,6 +85,7 @@ Structural pattern that separates data access and storage concerns from the rest
 An open-source object-relational mapping (ORM) framework i.e. Hibernate is used that simplifies data persistence by mapping Java objects to relational database tables.
 - ## Swagger Documentation
 Swagger documentation, open-source toolset is used to describe, document, and interact with RESTful APIs, simplifying API development and consumption.
+You can check-into the swagger from url `http://localhost:8088/swagger-ui.html`
 ```xml
 <dependency>
             <groupId>io.springfox</groupId>
@@ -78,9 +98,10 @@ Swagger documentation, open-source toolset is used to describe, document, and in
             <version>2.9.2</version>
         </dependency>
 ```
+![Swagger](swagger.png)
 - ### Validation
 Annotation driven validation is implemented using `@Valid` for ease and effective validation.
-- ## Logging
+- ### Logging
 Logging is implemented for system analysis and troubleshooting.
 - ### Unit Test
 Unit Test using Mockito and JUnit.
