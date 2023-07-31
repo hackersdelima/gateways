@@ -37,14 +37,67 @@ Each peripheral device has:
 - Remove one device for gateway
 
 ## Technical Features
-- Spring Boot REST Controller
-- MapStruct for Object Mapping
-- Exception Handling
-- Repository Design Pattern
-- Hibernate
-- Swagger Documentation
-- Application Properties value implementation
-- Validation
-- Logging
-- Unit Test
-- CI/CD
+- ### Spring Boot REST Controller
+The Controller is available as GatewayController containing APIs for Software Features.
+- ### MapStruct for Object Mapping
+MapStruct library is used for easy mapping of Objects.
+
+```xml
+<dependency>
+   <groupId>org.mapstruct</groupId>
+   <artifactId>mapstruct</artifactId>
+   <version>1.5.3.Final</version>
+</dependency>
+<dependency>
+   <groupId>org.mapstruct</groupId>
+   <artifactId>mapstruct-processor</artifactId>
+   <version>1.5.3.Final</version>
+</dependency>
+```
+- ## Exception Handling
+Possible exceptions are handled in the project. These possible exceptions are 
+1. ResourceNotFoundException
+2. DeviceLimitExceedException
+3. ValidationException
+
+- ### Repository Design Pattern
+Structural pattern that separates data access and storage concerns from the rest of the application, providing a centralized interface to interact with data sources such as databases or APIs.
+- ## Hibernate
+An open-source object-relational mapping (ORM) framework i.e. Hibernate is used that simplifies data persistence by mapping Java objects to relational database tables.
+- ## Swagger Documentation
+Swagger documentation, open-source toolset is used to describe, document, and interact with RESTful APIs, simplifying API development and consumption.
+```xml
+<dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.9.2</version>
+        </dependency>
+```
+- ### Validation
+Annotation driven validation is implemented using `@Valid` for ease and effective validation.
+- ## Logging
+Logging is implemented for system analysis and troubleshooting.
+- ### Unit Test
+Unit Test using Mockito and JUnit.
+```xml
+<dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.5.1</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.2</version>
+            <scope>test</scope>
+        </dependency>
+```
+- ### Continuous Integration (CI) builds
+This process involves using GitHub Actions to automatically build the project, generate the jar file, and publish it as an artifact whenever changes are pushed to the repository.
+This artifact can be downloaded and tested in local.
